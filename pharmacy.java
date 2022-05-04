@@ -3,12 +3,19 @@ import java.util.*;
 import java.lang.*;
 import java.util.List;
 import java.util.Scanner;
+// import userPackage.*;
 
 class Demo{
     public static void main(String args[]){
 
-        drug drug0=new drug(14,"ultraset","for headache",2,30);
+        drug drug0=new drug(14,"ultraset","for headache",20,30);
         drug0.generate_bill();
+        // drug0.super.add_drug(); parent class 
+        //static method in interface
+         stock.printDrugTypes("type1");
+        //  userPackage l = new userPackage();
+        //  System.out.println(l.getUserName());
+
 
         customer cust1 = new customer(16,"Divya","1234567890",12);
         cust1.order_drug(drug0.d_id);
@@ -30,8 +37,14 @@ class Demo{
          System.out.println("Your drug ordered is:");
          o.order_drug(1);
          o.show();
-
-        //shallow copy
+        //  interface demonstration.
+        // Company comp1 = new Company(2);
+         Company comp = new Company("Pradeep Co.","Jayanagar");
+         comp.generate_alert();
+        //  nested interface
+        report r = new report();
+        r.most_sold();
+     //shallow copy
         drug drug3 = drug2;
         System.out.println("\nShallow copy: drug2 - " + drug2 + " and drug3 - "+ drug3);
         //deep copy and constructor chaining
@@ -51,67 +64,15 @@ class Demo{
         System.out.println("Drug type 2: " + drug.drug_type2);
         System.out.println("Drug type 3: " + drug.drug_type3);
 
-        //static methods and overloading
-        System.out.println("\nStatic methods and overloading");
-        drug.printDrugTypes();
-        drug.printDrugTypes("type1");
-        drug.printDrugTypes("type4");
-
         //nested static class
         System.out.println("\nNested Static class");
         drug.DrugCountry drug5 = new drug.DrugCountry();
         drug5.IndiaDrug();
     }
 }
-class login
- {
-    public String userName;
-    private String password;
-    public String type;
 
-    public login(){
-        System.out.println("Enter Username : ");
-        Scanner sc=new Scanner(System.in);
-        this.userName = sc.next();
-        setUserName(this.userName);
-        System.out.println("Create Password : ");
-        this.password = sc.next();
-        setPassword(this.password);
-        System.out.println("Enter Type(User or Admin) : ");
-        this.type = sc.next();
-        setType(this.type);
-        sc.close();
-    }
 
-	  public login(String userName, String password, String type)
-    {
-      this.userName=userName;
-      this.password=password;
-      this.type=type;
-	}
-
-    public void setUserName(String userName){
-		  this.userName=userName;
-	  }
-    public void setPassword(String password){
-      this.password=password;
-    }
-    public void setType(String type){
-      this.type=type;
-    }
-
-    public String getUserName(){
-      return userName;
-    }
-    public String getPassword(){
-      return password;
-    }
-    public String getType(){
-      return type;
-    }
-}
-
-class drug extends Branches
+class drug extends Branches implements stock
 {
     public int d_id;
     public String name;
@@ -155,25 +116,7 @@ class drug extends Branches
         System.out.println("Drug Type 2: "+drug_type2);
         System.out.println("Drug Type 3: "+drug_type3);
     }
-    public static void printDrugTypes(String drug_type)
-    {
-        if(drug_type == "type1")
-        {
-            System.out.println("Drug Type 1: "+drug_type1);
-        }
-        else if(drug_type == "type2")
-        {
-            System.out.println("Drug Type 2: "+drug_type2);
-        }
-        else if(drug_type == "type3")
-        {
-            System.out.println("Drug Type 3: "+drug_type3);
-        }
-        else
-        {
-            System.out.println("Drug type not found");
-        }
-    }
+    
 
     static class DrugCountry
     {
@@ -212,6 +155,18 @@ class drug extends Branches
         System.out.println("Quantity purchased: "+this.quantity);
         System.out.println("Amount paid: "+ amount);
     }
+
+    public void add_drug(){
+        super.add_drug();
+        System.out.println("enter drug id:");
+        Scanner sc = new Scanner(System.in);
+        int d_id = sc.nextInt();
+        if( this.d_id == d_id && this.quantity < 5){
+            System.out.println("This drug needs to be added" +d_id);
+        
+        }
+    }
+
 }
 
 class customer extends Order{
@@ -391,10 +346,13 @@ class Branches extends Company  {
     public void generate_report(){
         double yearly_profit = this.yearly_profit(this.b_id);
         Scanner sc = new Scanner(System.in);
+        System.out.println("Enter branch-id");
         this.b_id = sc.nextInt();
         System.out.println("Branch id: "+this.b_id);
+        System.out.println("Enter branch-name");
         this.name = sc.next();
         System.out.println("Branch name: "+this.name);
+        System.out.println("Enter year");
         this.year = sc.nextInt();
         System.out.println("Year: "+this.year);
         //super variable demonstration
@@ -402,6 +360,35 @@ class Branches extends Company  {
         System.out.println("The Yearly profit is: "+ yearly_profit);
        
     } 
+}
+
+interface stock{
+   
+   public void generate_alert();
+   default void add_drug(){
+       System.out.println("add to stock"); 
+   }
+   public static void printDrugTypes(String drug_type)
+    {
+        if(drug_type == "type1")
+        {
+            System.out.println("Drug Type 1: minor");
+        }
+        else if(drug_type == "type2")
+        {
+            System.out.println("Drug Type 2: senior");
+        }
+        else if(drug_type == "type3")
+        {
+            System.out.println("Drug Type 3: others");
+        }
+        else
+        {
+            System.out.println("Drug type not found");
+        }
+    }
+
+
 }
  class Company implements stock{
     public int comp_id;
@@ -414,11 +401,15 @@ class Branches extends Company  {
 
     
 
-    public Company(){}
+    public Company(){
+        Scanner sc= new Scanner(System.in);
+        this.comp_id = sc.nextInt();
+    }
 
-    public Company(String name,String address,int sales){
+    public Company(String name,String address){
         this.name = name;
         this.address = address;
+         System.out.println("Enter your sales:");
         this.sales = sales;
          Scanner sc = new Scanner(System.in);
         this.sales = sc.nextInt();
@@ -427,7 +418,9 @@ class Branches extends Company  {
 
    public void  generate_sales(){
        Scanner sc = new Scanner(System.in);
+       System.out.println("Enter the company name");
        this.name = sc.next();
+       System.out.println("Enter the address:");
       this.address = sc.next();
       System.out.println("company name: "+this.name);
        System.out.println("address: "+this.address);
@@ -435,19 +428,15 @@ class Branches extends Company  {
    }
 
         public void generate_alert(){
-           
-            if(this.sales > 0  ){
-                profit = (this.sales/30) * 100;
+           System.out.println("The company id:"+this.comp_id);
+            if(this.sales > 0 && this.sales < 30 ){
+                // System.out.println("Enter your sales:");
+                profit = ((this.sales/30.0)* 100);
                 System.out.println("Profit monthly:"+profit);
+               
             }
             
-        }
-
-        // public void most_sold()
-       
-
-   
-   
+        } 
  }
 
  abstract class Order{
@@ -462,11 +451,16 @@ class Branches extends Company  {
     }
 
  }
-interface stock{
-   
-   public void generate_alert();
 
-}
-// interface report{
-//     public void most_sold();
-// }
+
+class report implements A.user{
+ public void most_sold(){
+     System.out.println("NESTED INTERFACE");
+
+}}
+
+ class A{
+    interface user{
+        public void most_sold();
+    }}
+
