@@ -3,40 +3,41 @@ import java.util.*;
 import java.lang.*;
 import java.util.List;
 import java.util.Scanner;
-// import userPackage.*;
+import MyPackage.login;
 
 class Demo{
     public static void main(String args[]){
 
         drug drug0=new drug(14,"ultraset","for headache",20,30);
         drug0.generate_bill();
-        // drug0.super.add_drug(); parent class 
-        //static method in interface
-         stock.printDrugTypes("type1");
-        //  userPackage l = new userPackage();
-        //  System.out.println(l.getUserName());
-
-
+        drug0.add_drug();  
+        stock.printDrugTypes("type1");
+        login user3 = new login("ankur","ankur@","admin");
+        System.out.println(user3.getPassword());
+       
         customer cust1 = new customer(16,"Divya","1234567890",12);
         cust1.order_drug(drug0.d_id);
 
         Branches b = new Branches();
         System.out.println("This is about simple inheritance: ");
         b.generate_sales();
-        //constructor overloading and chaining
-        drug drug1 = new drug(1, "Paracetamol", "Antibody drug.", 10);
-        drug1.generate_bill();
-        drug drug2 = new drug(2, "Sinerest", "Antibody drug(fever).", 20, 90);
-        drug2.generate_bill();
+       
+//         drug drug1 = new drug(1, "Paracetamol", "Antibody drug.", 10);
+//         drug1.generate_bill();
+//         drug drug2 = new drug(2, "Sinerest", "Antibody drug(fever).", 20, 90);
+//         drug2.generate_bill();
+        
         //multiple inheritance demonstration
          Branches b2 = new Branches(1,"KORMANGALA",1995,2,150.34,200.56);
          System.out.println("Your report is generated:");
         drug2.generate_report();
+        
       // abstration demonstration
          Order o = new customer();
          System.out.println("Your drug ordered is:");
          o.order_drug(1);
          o.show();
+        
         //  interface demonstration.
         // Company comp1 = new Company(2);
          Company comp = new Company("Pradeep Co.","Jayanagar");
@@ -44,30 +45,30 @@ class Demo{
         //  nested interface
         report r = new report();
         r.most_sold();
-     //shallow copy
-        drug drug3 = drug2;
-        System.out.println("\nShallow copy: drug2 - " + drug2 + " and drug3 - "+ drug3);
-        //deep copy and constructor chaining
-        drug drug4 = new drug(drug2);
-        System.out.println("Deep copy: drug2 - " + drug2 + " and drug4 - "+ drug4+"\n");
+//      //shallow copy
+//         drug drug3 = drug2;
+//         System.out.println("\nShallow copy: drug2 - " + drug2 + " and drug3 - "+ drug3);
+//         //deep copy and constructor chaining
+//         drug drug4 = new drug(drug2);
+//         System.out.println("Deep copy: drug2 - " + drug2 + " and drug4 - "+ drug4+"\n");
 
-        //function overloading
-        customer customer1 = new customer(1, "Ranu", "9900160224", 6969);
-        customer1.search_drug(2);
-        customer1.search_drug("dolo");
-        customer1.search_drug(2, "dolo");
-        customer1.search_drug(3, "dolo");
+//         //function overloading
+//         customer customer1 = new customer(1, "Ranu", "9900160224", 6969);
+//         customer1.search_drug(2);
+//         customer1.search_drug("dolo");
+//         customer1.search_drug(2, "dolo");
+//         customer1.search_drug(3, "dolo");
 
-        //static variables
-        System.out.println("\nStatic variables");
-        System.out.println("Drug type 1: " + drug.drug_type1);
-        System.out.println("Drug type 2: " + drug.drug_type2);
-        System.out.println("Drug type 3: " + drug.drug_type3);
+//         //static variables
+//         System.out.println("\nStatic variables");
+//         System.out.println("Drug type 1: " + drug.drug_type1);
+//         System.out.println("Drug type 2: " + drug.drug_type2);
+//         System.out.println("Drug type 3: " + drug.drug_type3);
 
-        //nested static class
-        System.out.println("\nNested Static class");
-        drug.DrugCountry drug5 = new drug.DrugCountry();
-        drug5.IndiaDrug();
+//         //nested static class
+//         System.out.println("\nNested Static class");
+//         drug.DrugCountry drug5 = new drug.DrugCountry();
+//         drug5.IndiaDrug();
     }
 }
 
@@ -360,6 +361,10 @@ class Branches extends Company  {
         System.out.println("The Yearly profit is: "+ yearly_profit);
        
     } 
+    // final keyword demonstration
+//    public void checking(){
+//        System.out.println("go");
+//    }
 }
 
 interface stock{
@@ -410,7 +415,7 @@ interface stock{
         this.name = name;
         this.address = address;
          System.out.println("Enter your sales:");
-        this.sales = sales;
+         this.sales = sales;
          Scanner sc = new Scanner(System.in);
         this.sales = sc.nextInt();
       
@@ -437,6 +442,10 @@ interface stock{
             }
             
         } 
+
+        final void checking(){
+            System.out.println("hello there");
+        }
  }
 
  abstract class Order{
@@ -456,11 +465,17 @@ interface stock{
 class report implements A.user{
  public void most_sold(){
      System.out.println("NESTED INTERFACE");
+    Scanner sc = new Scanner(System.in);
+    String name = sc.next();
+    int sales = sc.nextInt();
+    if(sales > 10){
+        System.out.println("Name:"+name);
+    }
 
-}}
+}
+}
 
  class A{
     interface user{
         public void most_sold();
     }}
-
